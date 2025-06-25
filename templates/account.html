@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Account & History - Our Couple Calendar</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>👥 {{ user }}'s Page</h1>
+
+    <div class="nav-links">
+        <a href="{{ url_for('calendar') }}">📅 Back to Calendar</a>
+        <a href="{{ url_for('logout') }}">🚪 Logout</a>
+    </div>
+
+    <hr>
+    <h2>🎨 Customize Your Event Color</h2>
+    <form method="POST" action="{{ url_for('update_color') }}">
+        <label for="color">Choose your calendar color:</label>
+        <input type="color" name="color" id="color" value="{{ session['color'] }}">
+        <button type="submit">Save Color</button>
+    </form>
+
+    <hr>
+    <h2>📜 Your Event History</h2>
+    {% if events %}
+        <ul>
+            {% for event in events %}
+                <li>
+                    <strong>{{ event.date }}</strong>: {{ event.title }}<br>
+                    <em>{{ event.description }}</em>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No events yet!</p>
+    {% endif %}
+</body>
+</html>

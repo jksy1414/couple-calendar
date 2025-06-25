@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login - Couple Calendar</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Welcome to Our Couple Calendar 💕</h1>
+    <form method="POST" class="login-form">
+        <p>Select who you are:</p>
+        <button type="submit" name="user" value="John">👦 John</button>
+        <button type="submit" name="user" value="Emmy">👧 Emmy</button>
+    </form>
+</body>
+</html>

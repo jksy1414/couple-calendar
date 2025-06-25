@@ -1,0 +1,240 @@
+/* === Base Styling === */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #ffe4ec;
+    text-align: center;
+    margin: 0;
+    padding: 10px;
+}
+
+h1 {
+    color: #d63384;
+    margin-top: 20px;
+    font-size: 2rem;
+}
+
+h2 {
+    color: #b91d73;
+    margin-top: 30px;
+    font-size: 1.5rem;
+}
+
+/* === Navigation Links === */
+.nav-links {
+    margin: 15px 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+}
+
+.nav-links a {
+    color: #d63384;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.nav-links a:hover {
+    text-decoration: underline;
+}
+
+/* === Calendar Container === */
+#calendar {
+    width: 95%;
+    max-width: 700px;
+    background-color: white;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin: 20px auto;
+}
+
+/* === Modal Popup Styling === */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 100;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+    background-color: #fff0f5;
+    margin: 10% auto;
+    padding: 20px;
+    width: 90%;
+    max-width: 400px;
+    border-radius: 12px;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    text-align: left;
+}
+
+.close {
+    color: #d63384;
+    float: right;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* === Form Elements === */
+form {
+    max-width: 500px;
+    margin: 0 auto 30px;
+    text-align: left;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 60px;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    background-color: #ff69b4;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #ff1493;
+}
+
+button.danger {
+    background-color: #dc3545;
+    color: white;
+    margin-top: 10px;
+}
+
+button.danger:hover {
+    background-color: #c82333;
+}
+
+/* === Login Form === */
+.login-form {
+    margin-top: 60px;
+}
+
+.login-form button {
+    padding: 12px 24px;
+    font-size: 18px;
+    margin: 10px;
+    cursor: pointer;
+    border-radius: 10px;
+    border: none;
+    background-color: #f78acb;
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+.login-form button:hover {
+    background-color: #e75aa1;
+}
+
+/* === History List === */
+.history-list, ul {
+    max-width: 700px;
+    margin: 20px auto;
+    padding: 0;
+    list-style-type: none;
+    text-align: left;
+}
+
+.history-list li, ul li {
+    background: #fff0f5;
+    padding: 12px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* === Responsive Design === */
+@media (max-width: 600px) {
+    h1 {
+        font-size: 1.6rem;
+    }
+
+    h2 {
+        font-size: 1.2rem;
+    }
+
+    .modal-content {
+        width: 95%;
+    }
+
+    input, textarea, button {
+        font-size: 15px;
+    }
+
+    .login-form button {
+        width: 90%;
+        margin: 10px auto;
+    }
+
+    .nav-links {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+/* === Calendar Dropdown Controls (Month & Year Selectors) === */
+.calendar-controls {
+    margin: 20px 0;
+    text-align: center;
+}
+
+.calendar-controls label {
+    margin-right: 5px;
+    font-weight: bold;
+    color: #b91d73;
+}
+
+.calendar-controls select {
+    padding: 8px 12px;
+    margin: 0 5px 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    background-color: #fff0f5;
+    font-size: 16px;
+    color: #d63384;
+}
+
+.calendar-controls select:focus {
+    outline: none;
+    border-color: #ff69b4;
+}
+
+.calendar-controls button {
+    padding: 8px 16px;
+    background-color: #ff69b4;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 15px;
+    margin-left: 8px;
+}
+
+.calendar-controls button:hover {
+    background-color: #ff1493;
+}

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Our Couple Calendar 💖</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.css" rel="stylesheet">
+    <style>
+        .calendar-controls {
+            margin: 10px 0;
+        }
+        .calendar-controls select {
+            padding: 4px 8px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>💑 Our Couple Calendar</h1>
+    <p>Logged in as: {{ user }}</p>
+
+    <div class="nav-links">
+        <a href="{{ url_for('account') }}">👤 Account & History</a> |
+        <a href="{{ url_for('logout') }}">🚪 Logout</a>
+    </div>
+
+    <!-- Dropdowns -->
+    <div class="calendar-controls">
+        <label for="monthSelect">Month:</label>
+        <select id="monthSelect">
+            <option value="0">January</option><option value="1">February</option>
+            <option value="2">March</option><option value="3">April</option>
+            <option value="4">May</option><option value="5">June</option>
+            <option value="6">July</option><option value="7">August</option>
+            <option value="8">September</option><option value="9">October</option>
+            <option value="10">November</option><option value="11">December</option>
+        </select>
+
+        <label for="yearSelect">Year:</label>
+        <select id="yearSelect"></select>
+        <button id="goToBtn">Go</button>
+    </div>
+
+    <!-- Calendar -->
+    <div id="calendar"></div>
+
+    <!-- Modal Popup -->
+    <div id="eventModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>Edit or Add Event</h3>
+            <form id="eventForm">
+                <input type="hidden" name="date" id="eventDate">
+                <label>Title:</label><br>
+                <input type="text" name="title" id="eventTitle" required><br>
+                <label>Description:</label><br>
+                <textarea name="description" id="eventDescription"></textarea><br>
+                <button type="submit">Save</button>
+            </form>
+            <button id="deleteBtn" class="danger">Delete</button>
+        </div>
+    </div>
+
+    <!-- JS -->
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const modal = document.getElementById("eventModal");
+        const span = document.querySelector(".close");
+        const dateInput = document.getElementById("eventDate");
+        const titleInput = document.getElementById("eventTitle");
+        const descInput = document.getElementById("eventDescription");
+        const deleteBtn = document.getElementById("deleteBtn");
+
+        const yearSelect = document.getElementById("yearSelect");
+        const monthSelect = document.getElementById("monthSelect");
+        const goToBtn = document.getElementById("goToBtn");
+
+        // Fill year dropdown (2020–2050)
+        const currentYear = new Date().getFullYear();
+        for (let y = currentYear; y <= 2050; y++) {
+            const option = document.createElement("option");
+            option.value = y;
+            option.textContent = y;
+            yearSelect.appendChild(option);
+        }
+
+        let existingEvents = [];
+
+        const calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
+            initialView: 'dayGridMonth',
+            timeZone: 'local',
+            events: '/events',
+            headerToolbar: {
+                left: 'prev,next today',
+                center: 'title',
+                right: ''
+            },
+            selectable: true,
+            navLinks: true,
+            eventDidMount: function(info) {
+                existingEvents = calendar.getEvents();
+            },
+            dateClick: function(info) {
+                const clickedDate = info.dateStr;
+                dateInput.value = clickedDate;
+                titleInput.value = "";
+                descInput.value = "";
+                modal.style.display = "block";
+            },
+            eventClick: function (info) {
+                const clickedDate = info.event.startStr;
+                dateInput.value = clickedDate;
+                titleInput.value = info.event.title;
+                descInput.value = info.event.extendedProps.description || '';
+                modal.style.display = "block";
+            }
+        });
+
+        calendar.render();
+
+        // Go to selected month/year
+        goToBtn.addEventListener("click", function () {
+            const month = parseInt(monthSelect.value);
+            const year = parseInt(yearSelect.value);
+            const date = new Date(year, month, 1);
+            calendar.gotoDate(date);
+        });
+
+        // Modal close
+        span.onclick = () => modal.style.display = "none";
+        window.onclick = (event) => {
+            if (event.target == modal) modal.style.display = "none";
+        };
+
+        // Save event
+        document.getElementById("eventForm").addEventListener("submit", function (e) {
+            e.preventDefault();
+            fetch("/calendar", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: `date=${encodeURIComponent(dateInput.value)}&title=${encodeURIComponent(titleInput.value)}&description=${encodeURIComponent(descInput.value)}`
+            }).then(() => {
+                modal.style.display = "none";
+                calendar.refetchEvents();
+                existingEvents = [];
+                e.target.reset();
+            });
+        });
+
+        // Delete event
+        deleteBtn.addEventListener("click", function () {
+            const date = dateInput.value;
+            const title = titleInput.value;
+            if (confirm(`Are you sure you want to delete the event on ${date}?`)) {
+                fetch("/delete", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: `date=${encodeURIComponent(date)}&title=${encodeURIComponent(title)}`
+                }).then(() => {
+                    modal.style.display = "none";
+                    calendar.refetchEvents();
+                    existingEvents = [];
+                });
+            }
+        });
+    });
+    </script>
+</body>
+</html>
